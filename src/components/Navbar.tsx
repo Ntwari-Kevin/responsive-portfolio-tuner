@@ -5,7 +5,6 @@ import { Menu, X } from 'lucide-react';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [logoLoaded, setLogoLoaded] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,16 +18,12 @@ const Navbar = () => {
   const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
     { name: 'Services', href: '#services' },
     { name: 'Testimonials', href: '#testimonials' },
     { name: 'Contact', href: '#contact' },
   ];
-
-  const handleLogoError = () => {
-    console.error("Logo image failed to load");
-    setLogoLoaded(false);
-  };
 
   return (
     <nav 
@@ -43,21 +38,13 @@ const Navbar = () => {
           href="#" 
           className="flex items-center transition-colors hover:text-primary/80"
         >
-          <div className="logo-container mr-2">
+          <div className="logo-container">
             <img 
               src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=80&h=80" 
               alt="Jovin Abayo Logo" 
-              className="logo-image rounded-full"
-              onLoad={() => setLogoLoaded(true)}
-              onError={handleLogoError}
+              className="logo-image rounded-full border-2 border-primary"
             />
-            {!logoLoaded && (
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                <span className="text-lg font-bold">JA</span>
-              </div>
-            )}
           </div>
-          <span className="logo-text text-xl md:text-2xl font-bold">Jovin.dev</span>
         </a>
 
         {/* Desktop Navigation */}

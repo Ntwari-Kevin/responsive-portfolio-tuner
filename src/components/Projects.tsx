@@ -1,12 +1,18 @@
 
 import { useState, useEffect } from 'react';
 import { projects } from '../lib/data';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [visibleProjects, setVisibleProjects] = useState(projects);
   const [animate, setAnimate] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+
+  const initialCount = isMobile ? 3 : 6;
+  const displayedProjects = showAll ? visibleProjects : visibleProjects.slice(0, initialCount);
+  const showButton = visibleProjects.length > initialCount;
 
   const categories = [
     { id: 'all', name: 'All' },
@@ -17,7 +23,19 @@ const Projects = () => {
   ];
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
     setAnimate(false);
+    setShowAll(false);
+    
     setTimeout(() => {
       if (selectedCategory === 'all') {
         setVisibleProjects(projects);
@@ -28,6 +46,10 @@ const Projects = () => {
       setAnimate(true);
     }, 300);
   }, [selectedCategory]);
+
+  const toggleShowAll = () => {
+    setShowAll(!showAll);
+  };
 
   return (
     <section id="projects" className="section bg-secondary/30">
@@ -58,7 +80,7 @@ const Projects = () => {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {visibleProjects.map((project) => (
+          {displayedProjects.map((project) => (
             <div
               key={project.id}
               className={`project-card rounded-lg overflow-hidden bg-card shadow-md border border-border transition-opacity duration-300 ${
@@ -111,6 +133,28 @@ const Projects = () => {
             </div>
           ))}
         </div>
+        
+        {/* Show More/Less Button */}
+        {showButton && (
+          <div className="mt-10 text-center">
+            <button
+              onClick={toggleShowAll}
+              className="px-6 py-3 rounded-md bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 inline-flex items-center gap-2"
+            >
+              {showAll ? (
+                <>
+                  <span>Show Less</span>
+                  <ChevronUp size={18} />
+                </>
+              ) : (
+                <>
+                  <span>Show More</span>
+                  <ChevronDown size={18} />
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

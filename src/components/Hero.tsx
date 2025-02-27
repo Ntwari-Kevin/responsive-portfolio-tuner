@@ -1,6 +1,6 @@
 
 import { useEffect, useRef } from 'react';
-import { ArrowDown, GitHub, Linkedin, Mail, Twitter } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, Twitter } from 'lucide-react';
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -81,11 +81,11 @@ const Hero = () => {
             <a 
               href="https://github.com" 
               className="p-2 rounded-full bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
-              aria-label="GitHub"
+              aria-label="Github"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GitHub size={20} />
+              <Github size={20} />
             </a>
             <a 
               href="https://linkedin.com" 

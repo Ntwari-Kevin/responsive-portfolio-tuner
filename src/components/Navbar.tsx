@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [logoLoaded, setLogoLoaded] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +25,11 @@ const Navbar = () => {
     { name: 'Contact', href: '#contact' },
   ];
 
+  const handleLogoError = () => {
+    console.error("Logo image failed to load");
+    setLogoLoaded(false);
+  };
+
   return (
     <nav 
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -35,9 +41,23 @@ const Navbar = () => {
       <div className="container flex items-center justify-between">
         <a 
           href="#" 
-          className="text-xl md:text-2xl font-bold transition-colors hover:text-primary/80"
+          className="flex items-center transition-colors hover:text-primary/80"
         >
-          Jovin.dev
+          <div className="logo-container mr-2">
+            <img 
+              src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=80&h=80" 
+              alt="Jovin Abayo Logo" 
+              className="logo-image rounded-full"
+              onLoad={() => setLogoLoaded(true)}
+              onError={handleLogoError}
+            />
+            {!logoLoaded && (
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                <span className="text-lg font-bold">JA</span>
+              </div>
+            )}
+          </div>
+          <span className="logo-text text-xl md:text-2xl font-bold">Jovin.dev</span>
         </a>
 
         {/* Desktop Navigation */}
@@ -53,7 +73,7 @@ const Navbar = () => {
           ))}
           <a
             href="#contact"
-            className="px-4 py-2 rounded-md bg-primary text-primary-foreground transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            className="px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
             Let's Talk
           </a>

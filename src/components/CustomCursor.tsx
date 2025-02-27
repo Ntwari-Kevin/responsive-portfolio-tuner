@@ -8,8 +8,14 @@ const CustomCursor: React.FC = () => {
   const [linkHovered, setLinkHovered] = useState(false);
 
   useEffect(() => {
+    // Hide the default cursor
+    document.body.style.cursor = 'none';
+    
     const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      // Add a slight delay for smoother movement
+      setTimeout(() => {
+        setPosition({ x: e.clientX, y: e.clientY });
+      }, 10);
       setHidden(false);
     };
 
@@ -20,18 +26,20 @@ const CustomCursor: React.FC = () => {
     const handleLinkHoverLeave = () => setLinkHovered(false);
 
     const addLinkHoverListeners = () => {
-      const links = document.querySelectorAll('a, button, [role="button"]');
-      links.forEach((link) => {
-        link.addEventListener('mouseenter', handleLinkHoverEnter);
-        link.addEventListener('mouseleave', handleLinkHoverLeave);
+      const interactiveElements = document.querySelectorAll('a, button, [role="button"], input, textarea, select, [tabindex]:not([tabindex="-1"])');
+      interactiveElements.forEach((element) => {
+        element.addEventListener('mouseenter', handleLinkHoverEnter);
+        element.addEventListener('mouseleave', handleLinkHoverLeave);
+        // Also hide default cursor on interactive elements
+        (element as HTMLElement).style.cursor = 'none';
       });
     };
 
     const removeLinkHoverListeners = () => {
-      const links = document.querySelectorAll('a, button, [role="button"]');
-      links.forEach((link) => {
-        link.removeEventListener('mouseenter', handleLinkHoverEnter);
-        link.removeEventListener('mouseleave', handleLinkHoverLeave);
+      const interactiveElements = document.querySelectorAll('a, button, [role="button"], input, textarea, select, [tabindex]:not([tabindex="-1"])');
+      interactiveElements.forEach((element) => {
+        element.removeEventListener('mouseenter', handleLinkHoverEnter);
+        element.removeEventListener('mouseleave', handleLinkHoverLeave);
       });
     };
 
@@ -60,6 +68,7 @@ const CustomCursor: React.FC = () => {
 
     return () => {
       // Clean up
+      document.body.style.cursor = '';
       window.removeEventListener('mousemove', updatePosition);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
@@ -78,17 +87,19 @@ const CustomCursor: React.FC = () => {
   return (
     <>
       <div 
-        className="cursor bg-white" 
+        className="cursor bg-primary" 
         style={{
           transform: `translate(${position.x - 10}px, ${position.y - 10}px) scale(${clicked ? 0.8 : linkHovered ? 1.5 : 1})`,
-          opacity: hidden ? 0 : 1
+          opacity: hidden ? 0 : 1,
+          transition: "transform 0.15s ease-out, opacity 0.2s ease-out"
         }}
       />
       <div 
         className="cursor-dot bg-white" 
         style={{
           transform: `translate(${position.x - 4}px, ${position.y - 4}px)`,
-          opacity: hidden ? 0 : 1
+          opacity: hidden ? 0 : 1,
+          transition: "transform 0.1s linear"
         }}
       />
     </>

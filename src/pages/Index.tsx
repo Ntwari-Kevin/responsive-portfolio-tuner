@@ -12,12 +12,28 @@ import CustomCursor from '../components/CustomCursor';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkMobile();
+    
+    // Add resize listener
+    window.addEventListener('resize', checkMobile);
+    
     // Simulate loading
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   if (isLoading) {
@@ -30,7 +46,7 @@ const Index = () => {
 
   return (
     <>
-      <CustomCursor />
+      {!isMobile && <CustomCursor />}
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <Hero />

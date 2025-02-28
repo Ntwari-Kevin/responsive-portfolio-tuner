@@ -5,25 +5,51 @@ import { Menu, X } from 'lucide-react';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [activeSection, setActiveSection] = useState('home');
 
   const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
+    { name: 'Education', href: '#education' },
+    { name: 'Experience', href: '#experience' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
     { name: 'Services', href: '#services' },
     { name: 'Testimonials', href: '#testimonials' },
     { name: 'Contact', href: '#contact' },
   ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+      
+      // Get all section elements
+      const sections = navItems.map(item => 
+        document.querySelector(item.href) as HTMLElement
+      ).filter(Boolean);
+      
+      // Find the current section in view
+      const currentSection = sections.reduce((current, section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        const scrollY = window.scrollY;
+        
+        // Add some buffer to make the active state change smoother
+        const buffer = 200;
+        
+        if (scrollY >= sectionTop - buffer && scrollY < sectionTop + sectionHeight - buffer) {
+          return section.id;
+        } else {
+          return current;
+        }
+      }, 'home');
+      
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [navItems]);
 
   return (
     <nav 
@@ -48,12 +74,14 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-6">
           {navItems.map((item) => (
             <a
               key={item.name}
               href={item.href}
-              className="nav-link text-sm font-medium transition-colors hover:text-primary/80"
+              className={`nav-link text-sm font-medium transition-colors hover:text-primary ${
+                activeSection === item.href.substring(1) ? 'text-primary' : ''
+              }`}
             >
               {item.name}
             </a>
@@ -84,7 +112,9 @@ const Navbar = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="py-2 text-base font-medium transition-colors hover:text-primary/80"
+                className={`py-2 text-base font-medium transition-colors hover:text-primary ${
+                  activeSection === item.href.substring(1) ? 'text-primary' : ''
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}

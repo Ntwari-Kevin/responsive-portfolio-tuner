@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { projects } from '../lib/data';
 import { ExternalLink, Github, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -9,6 +9,7 @@ const Projects = () => {
   const [animate, setAnimate] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const projectsContainerRef = useRef<HTMLDivElement>(null);
 
   const initialCount = isMobile ? 3 : 6;
   const displayedProjects = showAll ? visibleProjects : visibleProjects.slice(0, initialCount);
@@ -48,11 +49,23 @@ const Projects = () => {
   }, [selectedCategory]);
 
   const toggleShowAll = () => {
-    setShowAll(!showAll);
+    // First scroll back to the projects section to make transition visible
+    if (showAll && projectsContainerRef.current) {
+      const offset = projectsContainerRef.current.offsetTop - 100; // 100px offset for padding
+      window.scrollTo({
+        top: offset,
+        behavior: 'smooth'
+      });
+    }
+
+    // Delay state change to allow scroll to complete
+    setTimeout(() => {
+      setShowAll(!showAll);
+    }, showAll ? 500 : 0);
   };
 
   return (
-    <section id="projects" className="section bg-secondary/30">
+    <section id="projects" className="section bg-secondary/30" data-aos="fade-up">
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-3">Featured Projects</h2>
@@ -62,7 +75,7 @@ const Projects = () => {
         </div>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center mb-12 gap-2">
+        <div className="flex flex-wrap justify-center mb-12 gap-2" data-aos="fade-up">
           {categories.map((category) => (
             <button
               key={category.id}
@@ -79,13 +92,23 @@ const Projects = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayedProjects.map((project) => (
+        <div 
+          ref={projectsContainerRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500 ease-in-out"
+          style={{ 
+            maxHeight: showAll ? '5000px' : `${Math.ceil(initialCount / 3) * 500}px`,
+            overflow: 'hidden'
+          }}
+        >
+          {visibleProjects.map((project, index) => (
             <div
               key={project.id}
-              className={`project-card rounded-lg overflow-hidden bg-card shadow-md border border-border transition-opacity duration-300 ${
-                animate ? 'opacity-100' : 'opacity-0'
+              className={`project-card rounded-lg overflow-hidden bg-card shadow-md border border-border transition-all duration-500 ${
+                animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+              data-aos="fade-up"
+              data-aos-delay={index % 3 * 100}
             >
               <div className="aspect-video relative overflow-hidden">
                 <img
@@ -136,7 +159,7 @@ const Projects = () => {
         
         {/* Show More/Less Button */}
         {showButton && (
-          <div className="mt-10 text-center">
+          <div className="mt-10 text-center" data-aos="fade-up">
             <button
               onClick={toggleShowAll}
               className="px-6 py-3 rounded-md bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 inline-flex items-center gap-2"

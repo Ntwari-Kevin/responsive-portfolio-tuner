@@ -1,10 +1,10 @@
 
 const About = () => {
   return (
-    <section id="about" className="section">
+    <section id="about" className="section" data-aos="fade-up">
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
+          <div data-aos="fade-right" data-aos-delay="100">
             <div className="relative">
               <div className="aspect-square rounded-lg overflow-hidden">
                 <img
@@ -22,7 +22,7 @@ const About = () => {
             </div>
           </div>
           
-          <div>
+          <div data-aos="fade-left" data-aos-delay="200">
             <div>
               <h2 className="mb-3">About Me</h2>
               <p className="text-muted-foreground mb-4">

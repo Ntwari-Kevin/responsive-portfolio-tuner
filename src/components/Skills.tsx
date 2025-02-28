@@ -1,5 +1,5 @@
 
-import { Code, Server, Layout, Cpu, Database, GitBranch, Globe, Zap, Terminal, Figma } from 'lucide-react';
+import { Code, Server, Layout, Cpu, Database, GitBranch, Globe, Zap, Terminal } from 'lucide-react';
 
 const Skills = () => {
   const skillCategories = [
@@ -37,16 +37,11 @@ const Skills = () => {
       category: 'Languages',
       icon: <Terminal className="w-8 h-8 text-primary" />,
       skills: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'HTML', 'CSS', 'SQL', 'Bash']
-    },
-    {
-      category: 'Design',
-      icon: <Figma className="w-8 h-8 text-primary" />,
-      skills: ['Figma', 'Adobe XD', 'Photoshop', 'Illustrator', 'UI/UX Design', 'Wireframing', 'Prototyping']
     }
   ];
 
   return (
-    <section id="skills" className="section bg-secondary/30">
+    <section id="skills" className="section bg-secondary/30" data-aos="fade-up">
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-3">My Skills</h2>
@@ -60,6 +55,8 @@ const Skills = () => {
             <div 
               key={index} 
               className="bg-card rounded-lg p-6 shadow-md border border-border transition-all hover:shadow-lg hover:-translate-y-1"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
             >
               <div className="flex items-center mb-4">
                 {category.icon}

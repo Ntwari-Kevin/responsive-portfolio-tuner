@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { testimonials } from '../lib/data';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
@@ -44,10 +45,10 @@ const Testimonials = () => {
     return Array.from({ length: 5 }).map((_, index) => (
       <Star
         key={index}
-        size={16}
+        size={14}
         className={`${
           index < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
-        }`}
+        } sm:w-4 sm:h-4`}
       />
     ));
   };
@@ -106,10 +107,10 @@ const Testimonials = () => {
 
   return (
     <section id="testimonials" className="section" data-aos="fade-up">
-      <div className="container">
-        <div className="mb-12 text-center">
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+        <div className="mb-8 sm:mb-12 text-center">
           <h2 className="mb-3">Testimonials</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
             What people are saying about working with me
           </p>
         </div>
@@ -117,7 +118,7 @@ const Testimonials = () => {
         <div className="relative max-w-4xl mx-auto">
           <div 
             ref={sliderRef}
-            className={`overflow-hidden ${isMobile ? 'cursor-grab' : ''} ${isDragging ? 'cursor-grabbing' : ''}`}
+            className={`overflow-hidden ${isMobile ? 'cursor-grab' : ''} ${isDragging ? 'cursor-grabbing' : ''} rounded-lg`}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={stopDragging}
@@ -133,27 +134,27 @@ const Testimonials = () => {
               {testimonials.map((testimonial) => (
                 <div 
                   key={testimonial.id} 
-                  className="min-w-full px-4"
+                  className="min-w-full px-2 sm:px-4"
                   data-aos="fade-up"
                 >
-                  <div className="testimonial-card bg-card rounded-lg p-6 md:p-8 shadow-md border border-border">
-                    <div className="flex flex-wrap items-center gap-4 mb-6">
+                  <div className="testimonial-card bg-card rounded-lg p-4 sm:p-6 md:p-8 shadow-md border border-border">
+                    <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                       {testimonial.avatar && (
                         <img 
                           src={testimonial.avatar} 
                           alt={testimonial.name} 
-                          className="w-12 h-12 rounded-full object-cover"
+                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
                         />
                       )}
                       <div>
-                        <h4 className="font-bold">{testimonial.name}</h4>
-                        <p className="text-sm text-muted-foreground">
+                        <h4 className="font-bold text-sm sm:text-base">{testimonial.name}</h4>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           {testimonial.role}, {testimonial.company}
                         </p>
                       </div>
                     </div>
                     
-                    <blockquote className="mb-6 italic">
+                    <blockquote className="mb-4 sm:mb-6 italic text-xs sm:text-sm">
                       "{testimonial.content}"
                     </blockquote>
                     
@@ -166,16 +167,17 @@ const Testimonials = () => {
             </div>
           </div>
 
+          {/* Mobile indicator */}
           {isMobile && (
-            <div className="flex justify-center mt-6">
-              <div className="flex items-center space-x-2">
+            <div className="flex justify-center mt-4 sm:mt-6">
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
                 {testimonials.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => selectSlide(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
+                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all ${
                       index === currentIndex
-                        ? 'bg-primary w-4'
+                        ? 'bg-primary w-3 sm:w-4'
                         : 'bg-secondary hover:bg-secondary/80'
                     }`}
                     aria-label={`Go to testimonial ${index + 1}`}
@@ -185,24 +187,25 @@ const Testimonials = () => {
             </div>
           )}
 
+          {/* Desktop Controls */}
           {!isMobile && (
-            <div className="flex items-center justify-between mt-6">
+            <div className="flex items-center justify-between mt-4 sm:mt-6">
               <button
                 onClick={prevSlide}
-                className="p-2 rounded-full bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                className="p-1.5 sm:p-2 rounded-full bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
                 aria-label="Previous testimonial"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={16} className="sm:w-5 sm:h-5" />
               </button>
               
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
                 {testimonials.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => selectSlide(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
+                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all ${
                       index === currentIndex
-                        ? 'bg-primary w-4'
+                        ? 'bg-primary w-3 sm:w-4'
                         : 'bg-secondary hover:bg-secondary/80'
                     }`}
                     aria-label={`Go to testimonial ${index + 1}`}
@@ -212,10 +215,10 @@ const Testimonials = () => {
               
               <button
                 onClick={nextSlide}
-                className="p-2 rounded-full bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+                className="p-1.5 sm:p-2 rounded-full bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
                 aria-label="Next testimonial"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={16} className="sm:w-5 sm:h-5" />
               </button>
             </div>
           )}

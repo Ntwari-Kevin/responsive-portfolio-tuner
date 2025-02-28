@@ -66,21 +66,21 @@ const Projects = () => {
 
   return (
     <section id="projects" className="section bg-secondary/30" data-aos="fade-up">
-      <div className="container">
-        <div className="mb-12 text-center">
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+        <div className="mb-8 sm:mb-12 text-center">
           <h2 className="mb-3">Featured Projects</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
             A collection of projects that showcase my skills and experience in software development.
           </p>
         </div>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center mb-12 gap-2" data-aos="fade-up">
+        <div className="flex flex-wrap justify-center mb-8 sm:mb-12 gap-2" data-aos="fade-up">
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
                 selectedCategory === category.id
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-secondary text-secondary-foreground hover:bg-secondary/70'
@@ -94,9 +94,9 @@ const Projects = () => {
         {/* Projects Grid */}
         <div 
           ref={projectsContainerRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500 ease-in-out"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-all duration-500 ease-in-out"
           style={{ 
-            maxHeight: showAll ? '5000px' : `${Math.ceil(initialCount / 3) * 500}px`,
+            maxHeight: showAll ? '5000px' : `${Math.ceil(initialCount / (isMobile ? 1 : (window.innerWidth < 1024 ? 2 : 3))) * 500}px`,
             overflow: 'hidden'
           }}
         >
@@ -117,14 +117,14 @@ const Projects = () => {
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                <p className="text-muted-foreground mb-4 text-sm">{project.description}</p>
+              <div className="p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold mb-2">{project.title}</h3>
+                <p className="text-muted-foreground mb-4 text-xs sm:text-sm">{project.description}</p>
                 
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((tech, index) => (
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4">
+                  {project.technologies.map((tech, techIndex) => (
                     <span
-                      key={index}
+                      key={techIndex}
                       className="px-2 py-1 text-xs font-medium rounded-full bg-secondary text-secondary-foreground"
                     >
                       {tech}
@@ -132,23 +132,23 @@ const Projects = () => {
                   ))}
                 </div>
                 
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3 sm:space-x-4">
                   <a
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary"
+                    className="flex items-center gap-1 text-xs sm:text-sm font-medium transition-colors hover:text-primary"
                   >
-                    <ExternalLink size={16} />
+                    <ExternalLink size={14} className="sm:w-4 sm:h-4" />
                     <span>Live Demo</span>
                   </a>
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary"
+                    className="flex items-center gap-1 text-xs sm:text-sm font-medium transition-colors hover:text-primary"
                   >
-                    <Github size={16} />
+                    <Github size={14} className="sm:w-4 sm:h-4" />
                     <span>Code</span>
                   </a>
                 </div>
@@ -159,20 +159,20 @@ const Projects = () => {
         
         {/* Show More/Less Button */}
         {showButton && (
-          <div className="mt-10 text-center" data-aos="fade-up">
+          <div className="mt-8 sm:mt-10 text-center" data-aos="fade-up">
             <button
               onClick={toggleShowAll}
-              className="px-6 py-3 rounded-md bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 inline-flex items-center gap-2"
+              className="px-4 py-2 sm:px-6 sm:py-3 rounded-md bg-primary text-primary-foreground text-xs sm:text-sm font-medium transition-all hover:bg-primary/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 inline-flex items-center gap-2"
             >
               {showAll ? (
                 <>
                   <span>Show Less</span>
-                  <ChevronUp size={18} />
+                  <ChevronUp size={16} className="sm:w-5 sm:h-5" />
                 </>
               ) : (
                 <>
                   <span>Show More</span>
-                  <ChevronDown size={18} />
+                  <ChevronDown size={16} className="sm:w-5 sm:h-5" />
                 </>
               )}
             </button>

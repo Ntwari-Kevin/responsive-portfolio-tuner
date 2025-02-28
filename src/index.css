@@ -58,6 +58,12 @@
     @apply border-border;
   }
 
+  html, body {
+    @apply overflow-x-hidden max-w-full;
+    width: 100%;
+    position: relative;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -68,19 +74,19 @@
   }
 
   h1 {
-    @apply text-4xl sm:text-5xl md:text-6xl;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
   }
 
   h2 {
-    @apply text-3xl sm:text-4xl;
+    @apply text-2xl sm:text-3xl md:text-4xl;
   }
 
   h3 {
-    @apply text-2xl sm:text-3xl;
+    @apply text-xl sm:text-2xl md:text-3xl;
   }
 
   h4 {
-    @apply text-xl sm:text-2xl;
+    @apply text-lg sm:text-xl md:text-2xl;
   }
 
   p {
@@ -88,11 +94,11 @@
   }
 
   .container {
-    @apply px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl;
+    @apply px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl w-full;
   }
 
   .section {
-    @apply py-12 sm:py-16 md:py-20;
+    @apply py-10 sm:py-14 md:py-16 lg:py-20;
   }
 }
 
@@ -250,4 +256,59 @@
   .cursor, .cursor-dot {
     display: none;
   }
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+  60% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out forwards;
+}
+
+.animate-wave {
+  animation: wave 2.5s infinite;
+  transform-origin: 70% 70%;
+  display: inline-block;
+}
+
+/* Prevent horizontal overflow */
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-1rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-top {
+  animation: slide-in-top 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Make images responsive */
+img {
+  max-width: 100%;
+  height: auto;
 }

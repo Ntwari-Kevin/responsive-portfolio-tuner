@@ -51,6 +51,37 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navItems]);
 
+  // Smooth scroll function
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const targetElement = document.querySelector(targetId) as HTMLElement;
+    
+    if (targetElement) {
+      // Close menu if open (mobile)
+      if (isOpen) {
+        setIsOpen(false);
+      }
+      
+      // Get the navbar height to offset the scroll position
+      const navbarHeight = document.querySelector('nav')?.clientHeight || 0;
+      
+      // Calculate scroll position
+      const offsetTop = targetElement.offsetTop - navbarHeight;
+      
+      // Smooth scroll to the element
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+      
+      // Update active section
+      setActiveSection(targetId.substring(1));
+      
+      // Update URL hash without scrolling
+      window.history.pushState(null, '', targetId);
+    }
+  };
+
   return (
     <nav 
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -63,6 +94,7 @@ const Navbar = () => {
         <a 
           href="#" 
           className="flex items-center transition-colors hover:text-primary/80"
+          onClick={(e) => handleNavClick(e, '#home')}
         >
           <div className="logo-container">
             <img 
@@ -79,6 +111,7 @@ const Navbar = () => {
             <a
               key={item.name}
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               className={`nav-link text-sm font-medium transition-colors hover:text-primary ${
                 activeSection === item.href.substring(1) ? 'text-primary' : ''
               }`}
@@ -88,6 +121,7 @@ const Navbar = () => {
           ))}
           <a
             href="#contact"
+            onClick={(e) => handleNavClick(e, '#contact')}
             className="px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
             Let's Talk
@@ -112,18 +146,18 @@ const Navbar = () => {
               <a
                 key={item.name}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className={`py-2 text-base font-medium transition-colors hover:text-primary ${
                   activeSection === item.href.substring(1) ? 'text-primary' : ''
                 }`}
-                onClick={() => setIsOpen(false)}
               >
                 {item.name}
               </a>
             ))}
             <a
               href="#contact"
+              onClick={(e) => handleNavClick(e, '#contact')}
               className="py-2 px-4 rounded-md bg-primary text-primary-foreground text-center transition-all hover:bg-primary/90"
-              onClick={() => setIsOpen(false)}
             >
               Let's Talk
             </a>

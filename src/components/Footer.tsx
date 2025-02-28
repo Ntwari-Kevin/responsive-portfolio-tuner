@@ -14,6 +14,29 @@ const Footer = () => {
     { name: 'Contact', href: '#contact' },
   ];
 
+  // Smooth scroll function
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const targetElement = document.querySelector(targetId) as HTMLElement;
+    
+    if (targetElement) {
+      // Get the navbar height to offset the scroll position
+      const navbarHeight = document.querySelector('nav')?.clientHeight || 0;
+      
+      // Calculate scroll position
+      const offsetTop = targetElement.offsetTop - navbarHeight;
+      
+      // Smooth scroll to the element
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+      
+      // Update URL hash without scrolling
+      window.history.pushState(null, '', targetId);
+    }
+  };
+
   return (
     <footer className="py-12 bg-secondary/30 border-t border-border">
       <div className="container">
@@ -38,7 +61,8 @@ const Footer = () => {
               {navItems.map((item) => (
                 <li key={item.name}>
                   <a 
-                    href={item.href} 
+                    href={item.href}
+                    onClick={(e) => handleSmoothScroll(e, item.href)} 
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     {item.name}

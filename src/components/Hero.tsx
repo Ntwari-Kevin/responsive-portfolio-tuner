@@ -34,6 +34,29 @@ const Hero = () => {
     setParticlesLoaded(true);
   };
 
+  // Smooth scroll function
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const targetElement = document.querySelector(targetId) as HTMLElement;
+    
+    if (targetElement) {
+      // Get the navbar height to offset the scroll position
+      const navbarHeight = document.querySelector('nav')?.clientHeight || 0;
+      
+      // Calculate scroll position
+      const offsetTop = targetElement.offsetTop - navbarHeight;
+      
+      // Smooth scroll to the element
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+      
+      // Update URL hash without scrolling
+      window.history.pushState(null, '', targetId);
+    }
+  };
+
   return (
     <section 
       id="home" 
@@ -189,12 +212,14 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <a 
               href="#contact" 
+              onClick={(e) => handleSmoothScroll(e, '#contact')}
               className="w-full sm:w-auto px-6 py-3 rounded-md bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             >
               Get in Touch
             </a>
             <a 
               href="#projects" 
+              onClick={(e) => handleSmoothScroll(e, '#projects')}
               className="w-full sm:w-auto px-6 py-3 rounded-md bg-secondary text-secondary-foreground font-medium transition-all hover:bg-secondary/80 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
             >
               View Projects
@@ -245,7 +270,8 @@ const Hero = () => {
       {/* Scroll indicator */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
         <a 
-          href="#about" 
+          href="#about"
+          onClick={(e) => handleSmoothScroll(e, '#about')}
           className="p-2 rounded-full bg-secondary text-secondary-foreground transition-all hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
           aria-label="Scroll down"
         >
